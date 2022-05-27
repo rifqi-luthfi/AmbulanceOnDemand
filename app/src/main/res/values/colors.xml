@@ -12,4 +12,7 @@
     <color name="colorPrimary">#00AEEF</color>
     <color name="redPrimary">#DA336B</color>
 
+    //verification color
+    <color name="grey">#9DA3AE</color>
+
 </resources>
