@@ -28,7 +28,11 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:text="Butuh Bantuan Darurat?"
-      android:textStyle="bold"/>
+      android:textStyle="bold"
+      map:layout_constraintEnd_toEndOf="parent"
+      map:layout_constraintHorizontal_bias="0.0"
+      map:layout_constraintStart_toStartOf="parent"
+      map:layout_constraintTop_toTopOf="parent" />
 
   <TextView
       android:id="@+id/tc_desc"
