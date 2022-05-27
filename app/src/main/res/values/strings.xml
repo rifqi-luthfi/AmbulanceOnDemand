@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">AmbulanceOnDemand</string>
     <string name="title_activity_maps">MapsActivity</string>
+
+    //landing page
+    <string name="title_landing">Butuh Bantuan Darurat?</string>
+    <string name="desc_landing">Hai #OrangBaik! Kamu menemukan kecelakaan atau keadaan darurat yang membutuhkan ambulan ? Gunakan fitur #PanggilAmbulan ini untuk memanggil ambulan secara gratis!</string>
+    <string name="puncLine_landing">Mari bantu sesama, mari tolong menolong. Jika bukan kita siapa lagi ?</string>
+    <string name="button_landing">Panggil Ambulan</string>
+    <string name="hint_location_landing">Lokasi Sekarang</string>
 </resources>

@@ -1,47 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
- xmlns:map="http://schemas.android.com/apk/res-auto"
- xmlns:tools="http://schemas.android.com/tools"
- android:layout_width="match_parent"
- android:layout_height="match_parent"
- tools:context=".MapsActivity">
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MapsActivity">
 
- <fragment
-     android:id="@+id/map"
-     android:name="com.google.android.gms.maps.SupportMapFragment"
-     android:layout_width="0dp"
-     android:layout_height="0dp"
-     map:layout_constraintBottom_toBottomOf="parent"
-     map:layout_constraintEnd_toEndOf="parent"
-     map:layout_constraintStart_toStartOf="parent"
-     map:layout_constraintTop_toTopOf="parent"/>
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        map:layout_constraintBottom_toBottomOf="parent"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintStart_toStartOf="parent"
+        map:layout_constraintTop_toTopOf="parent" />
 
- <androidx.constraintlayout.widget.ConstraintLayout
-     android:layout_width="match_parent"
-     android:layout_height="300dp"
-     map:layout_constraintBottom_toBottomOf="parent"
-     map:layout_constraintStart_toStartOf="parent"
-     android:background="@drawable/backgroundwhite">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_white_container"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="24dp"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintStart_toStartOf="parent"
+        map:layout_constraintTop_toTopOf="parent">
 
-  <TextView
-      android:id="@+id/tv_header"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="Butuh Bantuan Darurat?"
-      android:textStyle="bold"
-      map:layout_constraintEnd_toEndOf="parent"
-      map:layout_constraintHorizontal_bias="0.0"
-      map:layout_constraintStart_toStartOf="parent"
-      map:layout_constraintTop_toTopOf="parent" />
+        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+            android:id="@+id/actv_map_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:completionThreshold="1"
+            android:hint="@string/hint_location_landing"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:letterSpacing="0.01"
+            android:lineSpacingExtra="10sp"
+            android:maxLines="1"
+            android:padding="16dp"
+            android:singleLine="true"
+            map:layout_constraintBottom_toBottomOf="parent"
+            map:layout_constraintEnd_toEndOf="parent"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintTop_toTopOf="parent" />
 
-  <TextView
-      android:id="@+id/tc_desc"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="Hai #OrangBaik! Kamu menemukan kecelakaan atau keadaan darurat yang membutuhkan ambulan ? Gunakan fitur #PanggilAmbulan ini untuk memanggil ambulan secara gratis!  Mari bantu sesama, mari tolong menolong. Jika bukan kita siapa lagi ?"
-      map:layout_constraintTop_toBottomOf="@+id/tv_header" />
+        <ImageView
+            android:id="@+id/iv_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="16dp"
+            android:src="@drawable/ic_dropdown"
+            map:layout_constraintBottom_toBottomOf="parent"
+            map:layout_constraintEnd_toEndOf="parent"
+            map:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@drawable/bg_white_container"
+        android:padding="16dp"
+        map:layout_constraintBottom_toBottomOf="parent"
+        map:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/tvTitleAmbulance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/gillroy_bold"
+            android:text="@string/title_landing"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            map:layout_constraintEnd_toEndOf="parent"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvDescAmbulance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/gilroy_medium"
+            android:lineHeight="20sp"
+            android:text="@string/desc_landing"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintTop_toBottomOf="@id/tvTitleAmbulance" />
+
+        <TextView
+            android:id="@+id/tvPunchLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/puncLine_landing"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintTop_toBottomOf="@id/tvDescAmbulance" />
+
+        <TextView
+            android:id="@+id/tvCallAmbulance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/redPrimary"
+            android:fontFamily="@font/gilroy_medium"
+            android:padding="15dp"
+            android:text="@string/button_landing"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            map:layout_constraintBottom_toBottomOf="parent"
+            map:layout_constraintTop_toBottomOf="@id/tvPunchLine" />
 
 
- </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,6 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    //landing Color
     <color name="colorPrimary">#00AEEF</color>
+    <color name="redPrimary">#DA336B</color>
 
 </resources>
