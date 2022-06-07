@@ -8,4 +8,12 @@
     <string name="puncLine_landing">Mari bantu sesama, mari tolong menolong. Jika bukan kita siapa lagi ?</string>
     <string name="button_landing">Panggil Ambulan</string>
     <string name="hint_location_landing">Lokasi Sekarang</string>
+
+    //camera page
+    <string name="back_button_alt">Back</string>
+    <string name="capture_button_alt">Capture</string>
+    <string name="preview">Preview</string>
+    <string name="flash_button">Flash Button</string>
+    <string name="flip_button">Flip Button</string>
+
 </resources>
