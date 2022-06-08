@@ -11,7 +11,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        map:layout_constraintBottom_toBottomOf="parent"
+        map:layout_constraintBottom_toTopOf="@+id/clContainer"
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintHorizontal_bias="0.0"
         map:layout_constraintStart_toStartOf="parent"
@@ -24,14 +24,16 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
+        android:visibility="gone"
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintStart_toStartOf="parent"
         map:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-            android:id="@+id/actv_map_search"
+            android:id="@+id/actvMapSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/bg_white_container"
             android:completionThreshold="1"
             android:hint="@string/hint_location_landing"
             android:imeOptions="actionSearch"
@@ -41,14 +43,13 @@
             android:maxLines="1"
             android:padding="16dp"
             android:singleLine="true"
-            android:background="@drawable/bg_white_container"
             map:layout_constraintBottom_toBottomOf="parent"
             map:layout_constraintEnd_toEndOf="parent"
             map:layout_constraintStart_toStartOf="parent"
             map:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/iv_toggle"
+            android:id="@+id/ivToggle"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:padding="10dp"
@@ -57,15 +58,112 @@
             android:src="@drawable/ic_dropdown"
             map:layout_constraintBottom_toBottomOf="parent"
             map:layout_constraintEnd_toEndOf="parent"
-            map:layout_constraintTop_toTopOf="parent" />
+            map:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/toogledropdown"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintStart_toStartOf="parent"
+        map:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_white_container"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/tvTitlePickUpLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="@string/TitlePickUpLocation"
+                android:textSize="12sp"
+                map:layout_constraintStart_toStartOf="parent"
+                map:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/actvPickUpLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:completionThreshold="1"
+                android:fontFamily="@font/gillroy_bold"
+                android:hint="@string/hint_location_landing"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:letterSpacing="0.01"
+                android:lineSpacingExtra="10sp"
+                android:maxLines="1"
+                android:padding="4dp"
+                android:singleLine="true"
+                android:textSize="14sp"
+                map:layout_constraintEnd_toEndOf="parent"
+                map:layout_constraintStart_toStartOf="parent"
+                map:layout_constraintTop_toBottomOf="@id/tvTitlePickUpLocation" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="16dp"
+                android:background="@color/grey"
+                map:layout_constraintStart_toStartOf="parent"
+                map:layout_constraintTop_toBottomOf="@id/actvPickUpLocation"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/tvTitleDropLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="6dp"
+                android:text="@string/TitleDropOutLocation"
+                android:textSize="12sp"
+                map:layout_constraintStart_toStartOf="parent"
+                map:layout_constraintTop_toBottomOf="@id/divider" />
+
+
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/actvDropLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:completionThreshold="1"
+                android:fontFamily="@font/gillroy_bold"
+                android:hint="@string/Hint_DropOut_Location"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:letterSpacing="0.01"
+                android:lineSpacingExtra="10sp"
+                android:maxLines="1"
+                android:padding="4dp"
+                android:singleLine="true"
+                android:textSize="14sp"
+                map:layout_constraintEnd_toEndOf="parent"
+                map:layout_constraintStart_toStartOf="parent"
+                map:layout_constraintTop_toBottomOf="@id/tvTitleDropLocation" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clContainer"
+        android:layout_width="match_parent"
         android:layout_height="300dp"
         android:background="@drawable/bg_white_container"
         android:padding="16dp"
+        android:visibility="gone"
         map:layout_constraintBottom_toBottomOf="parent"
         map:layout_constraintStart_toStartOf="parent">
 
@@ -88,7 +186,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:fontFamily="@font/gilroy_medium"
-            android:lineHeight="20sp"
+            android:lineHeight="20dp"
             android:text="@string/desc_landing"
             map:layout_constraintStart_toStartOf="parent"
             map:layout_constraintTop_toBottomOf="@id/tvTitleAmbulance" />
@@ -115,6 +213,111 @@
             map:layout_constraintBottom_toBottomOf="parent"
             map:layout_constraintTop_toBottomOf="@id/tvPunchLine" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clContainer2"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/bg_white_container"
+        map:layout_constraintBottom_toBottomOf="parent"
+        map:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:id="@+id/llTimePickerLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_grey_top"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="22dp"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gilroy_medium"
+                android:text="@string/Ambulance_Title_Time_Picker" />
+
+            <TextView
+                android:id="@+id/tvTimePickerLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:fontFamily="@font/gillroy_bold"
+                android:textColor="@color/black"
+                tools:text="4 Menit" />
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:padding="16dp"
+            map:layout_constraintBottom_toBottomOf="parent"
+            map:layout_constraintTop_toBottomOf="@id/llTimePickerLocation">
+
+            <TextView
+                android:id="@+id/tvNameDriverAmbulance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gillroy_extra_bold"
+                map:layout_constraintStart_toStartOf="parent"
+                map:layout_constraintTop_toTopOf="parent"
+
+                tools:text="Bapak Hadi Sucipto" />
+
+            <TextView
+                android:id="@+id/tvNumberDriverAmbulance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gillroy_extra_bold"
+                android:textColor="@color/black"
+                map:layout_constraintEnd_toEndOf="parent"
+                map:layout_constraintStart_toEndOf="@id/tvNameDriverAmbulance"
+                map:layout_constraintTop_toTopOf="parent"
+                tools:text="B 3473 FUO" />
+
+            <TextView
+                android:id="@+id/tvDestinationHospital"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gilroy_medium"
+                android:textSize="12sp"
+                map:layout_constraintStart_toStartOf="parent"
+                map:layout_constraintTop_toBottomOf="@id/tvNameDriverAmbulance"
+                tools:text="Rumah Sakit Premier Jatinegara" />
+
+            <TextView
+                android:id="@+id/tvSendSMSDriver"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_blue_stroke"
+                android:fontFamily="@font/gillroy_extra_bold"
+                android:paddingHorizontal="37dp"
+                android:paddingVertical="13dp"
+                android:text="@string/Button_SMS"
+                android:textColor="@color/bluePrimary"
+                map:layout_constraintBottom_toBottomOf="parent"
+                map:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tvCallDriver"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_blue_button"
+                android:fontFamily="@font/gillroy_extra_bold"
+                android:paddingHorizontal="37dp"
+                android:paddingVertical="13dp"
+                android:text="@string/Button_Call"
+                android:textColor="@color/white"
+                map:layout_constraintBottom_toBottomOf="parent"
+                map:layout_constraintEnd_toEndOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

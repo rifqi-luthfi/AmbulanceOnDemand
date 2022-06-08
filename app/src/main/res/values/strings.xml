@@ -9,6 +9,16 @@
     <string name="button_landing">Panggil Ambulan</string>
     <string name="hint_location_landing">Lokasi Sekarang</string>
 
+    //Result Page
+    <string name="TitlePickUpLocation">Lokasi Jemput,</string>
+    <string name="TitleDropOutLocation">Lokasi Antar,</string>
+    <string name="Hint_DropOut_Location">Lokasi Tujuan</string>
+    <string name="Ambulance_Title_Time_Picker">Ambulan akan tiba</string>
+    <string name="Button_SMS">Kirim SMS</string>
+    <string name="Button_Call">Hubungi</string>
+    <string name="toogledropdown">ToogleDropdown</string>
+
+
     //camera page
     <string name="back_button_alt">Back</string>
     <string name="capture_button_alt">Capture</string>

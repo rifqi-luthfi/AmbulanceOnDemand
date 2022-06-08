@@ -11,8 +11,11 @@
     //landing Color
     <color name="colorPrimary">#00AEEF</color>
     <color name="redPrimary">#DA336B</color>
+    <color name="greyPrimary">#F8F8F8</color>
+    <color name="bluePrimary">#00AEEF</color>
 
     //verification color
     <color name="grey">#9DA3AE</color>
+
 
 </resources>
