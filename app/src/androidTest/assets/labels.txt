@@ -1,0 +1,2 @@
+Accident
+No_accident
