@@ -1,6 +1,7 @@
 package com.example.ambulanceondemand.ui.landing
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
@@ -19,6 +20,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.ambulanceondemand.databinding.ActivityMapsBinding
+import com.example.ambulanceondemand.ui.CameraActivity
+import com.example.ambulanceondemand.ui.VerificationPage
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import java.util.*
@@ -34,6 +37,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.tvCallAmbulance.setOnClickListener {
+            val intentVerification = Intent(this, VerificationPage::class.java)
+            startActivity(intentVerification)
+        }
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment

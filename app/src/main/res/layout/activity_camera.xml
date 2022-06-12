@@ -15,14 +15,6 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp" />
 
-    <ImageView
-        android:id="@+id/ivPreview"
-        android:contentDescription="@string/preview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:visibility="invisible" />
-
     <ImageButton
         android:id="@+id/ibBack"
         android:contentDescription="@string/back_button_alt"
