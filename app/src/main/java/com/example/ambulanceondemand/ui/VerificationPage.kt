@@ -19,7 +19,7 @@ import java.io.File
 
 class VerificationPage : AppCompatActivity() {
     private val mInputSize = 350
-    private val mModelPath = "converted_model_minggu.tflite"
+    private val mModelPath = "converted_model_malam_senin.tflite"
     private val mLabelPath = "labels.txt"
     private lateinit var classifier: Classifier
 
