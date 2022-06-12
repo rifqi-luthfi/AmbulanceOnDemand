@@ -28,5 +28,8 @@
     <string name="preview">Preview</string>
     <string name="flash_button">Flash Button</string>
     <string name="flip_button">Flip Button</string>
+    <string name="not_permission">Have not permission</string>
+    <string name="fail_take_photo">Fail to take a photo</string>
+    <string name="fail_camera">Fail to launch camera</string>
 
 </resources>
