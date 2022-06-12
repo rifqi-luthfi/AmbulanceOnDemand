@@ -8,6 +8,9 @@
     <string name="puncLine_landing">Mari bantu sesama, mari tolong menolong. Jika bukan kita siapa lagi ?</string>
     <string name="button_landing">Panggil Ambulan</string>
     <string name="hint_location_landing">Lokasi Sekarang</string>
+    <string name="start_running">Start Running</string>
+    <string name="stop_running">Stop Running</string>
+    <string name="start_point">Start Point</string>
 
     //Result Page
     <string name="TitlePickUpLocation">Lokasi Jemput,</string>

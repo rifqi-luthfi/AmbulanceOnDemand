@@ -89,6 +89,7 @@
                 android:layout_marginStart="4dp"
                 android:text="@string/TitlePickUpLocation"
                 android:textSize="12sp"
+                android:textColor="@color/black"
                 map:layout_constraintStart_toStartOf="parent"
                 map:layout_constraintTop_toTopOf="parent" />
 
@@ -100,13 +101,10 @@
                 android:completionThreshold="1"
                 android:fontFamily="@font/gillroy_bold"
                 android:hint="@string/hint_location_landing"
-                android:imeOptions="actionSearch"
-                android:inputType="text"
                 android:letterSpacing="0.01"
                 android:lineSpacingExtra="10sp"
-                android:maxLines="1"
                 android:padding="4dp"
-                android:singleLine="true"
+                android:textColor="@color/black"
                 android:textSize="14sp"
                 map:layout_constraintEnd_toEndOf="parent"
                 map:layout_constraintStart_toStartOf="parent"
@@ -132,11 +130,12 @@
                 android:layout_marginTop="6dp"
                 android:text="@string/TitleDropOutLocation"
                 android:textSize="12sp"
+                android:textColor="@color/black"
                 map:layout_constraintStart_toStartOf="parent"
                 map:layout_constraintTop_toBottomOf="@id/divider" />
 
 
-            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+            <TextView
                 android:id="@+id/actvDropLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -144,14 +143,13 @@
                 android:completionThreshold="1"
                 android:fontFamily="@font/gillroy_bold"
                 android:hint="@string/Hint_DropOut_Location"
-                android:imeOptions="actionSearch"
-                android:inputType="text"
                 android:letterSpacing="0.01"
                 android:lineSpacingExtra="10sp"
                 android:maxLines="1"
                 android:padding="4dp"
                 android:singleLine="true"
                 android:textSize="14sp"
+                android:textColor="@color/black"
                 map:layout_constraintEnd_toEndOf="parent"
                 map:layout_constraintStart_toStartOf="parent"
                 map:layout_constraintTop_toBottomOf="@id/tvTitleDropLocation" />
@@ -190,6 +188,7 @@
             android:layout_marginTop="12dp"
             android:fontFamily="@font/gilroy_medium"
             android:lineHeight="20dp"
+            android:textColor="@color/black"
             android:text="@string/desc_landing"
             map:layout_constraintStart_toStartOf="parent"
             map:layout_constraintTop_toBottomOf="@id/tvTitleAmbulance" />
@@ -199,6 +198,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:textColor="@color/black"
             android:text="@string/puncLine_landing"
             map:layout_constraintStart_toStartOf="parent"
             map:layout_constraintTop_toBottomOf="@id/tvDescAmbulance" />
