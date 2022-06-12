@@ -117,18 +117,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         binding.actvPickUpLocation.text = getCityName(location.latitude,location.longitude)
     }
 
-//    private fun getCityName(location: Location):String{
-//        var cityName:String = ""
-//        var countryName = ""
-//        var geoCoder = Geocoder(this, Locale.getDefault())
-//        var Adress = geoCoder.getFromLocation(location.latitude,location.longitude,3)
-//
-//        cityName = Adress.get(0).locality
-//        countryName = Adress.get(0).countryName
-//        Log.d("Lokasi gw","Your City: " + cityName + " ; your Country " + countryName)
-//        return cityName
-//    }
-
     private fun getCityName(lat: Double,long: Double):String{
         var geoCoder = Geocoder(this, Locale.getDefault())
         var Adress = geoCoder.getFromLocation(lat,long,5)
