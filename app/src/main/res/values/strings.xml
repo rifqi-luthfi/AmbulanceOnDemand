@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">AmbulanceOnDemand</string>
-    <string name="title_activity_maps">MapsActivity</string>
+    <string name="title_activity_maps">AmbulanceOnDemand</string>
 
     //landing page
     <string name="title_landing">Butuh Bantuan Darurat?</string>
