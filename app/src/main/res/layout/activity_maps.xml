@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MapsActivity">
+    tools:context=".ui.landing.MapsActivity">
 
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        map:layout_constraintBottom_toTopOf="@+id/clContainer"
+        map:layout_constraintBottom_toTopOf="@+id/clContainerBottom1"
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintHorizontal_bias="0.0"
         map:layout_constraintStart_toStartOf="parent"
@@ -19,6 +19,7 @@
         map:layout_constraintVertical_bias="0.0" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clContainerTop1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -74,7 +75,9 @@
         map:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clContainerTop2"
             android:layout_width="match_parent"
+            android:visibility="visible"
             android:layout_height="match_parent"
             android:background="@drawable/bg_white_container"
             android:padding="12dp">
@@ -89,7 +92,7 @@
                 map:layout_constraintStart_toStartOf="parent"
                 map:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+            <TextView
                 android:id="@+id/actvPickUpLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -158,12 +161,12 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clContainer"
+        android:id="@+id/clContainerBottom1"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:background="@drawable/bg_white_container"
         android:padding="16dp"
-        android:visibility="gone"
+        android:visibility="visible"
         map:layout_constraintBottom_toBottomOf="parent"
         map:layout_constraintStart_toStartOf="parent">
 
@@ -216,9 +219,10 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clContainer2"
+        android:id="@+id/clContainerBottom2"
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:visibility="gone"
         android:layout_margin="16dp"
         android:background="@drawable/bg_white_container"
         map:layout_constraintBottom_toBottomOf="parent"
