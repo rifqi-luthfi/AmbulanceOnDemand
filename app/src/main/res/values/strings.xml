@@ -32,4 +32,7 @@
     <string name="fail_take_photo">Fail to take a photo</string>
     <string name="fail_camera">Fail to launch camera</string>
 
+    //maps
+    <string name="base_url">https://maps.googleapis.com</string>
+
 </resources>
