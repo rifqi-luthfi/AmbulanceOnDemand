@@ -9,5 +9,7 @@ import retrofit2.http.Query
 
 interface ApiServicesDriver {
     @GET("ambulances")
-    fun getAmbulances(): Call<VerificationResponseX>
+    fun getAmbulances(
+        @Query("provinsi") province: String
+    ): Call<VerificationResponseX>
 }

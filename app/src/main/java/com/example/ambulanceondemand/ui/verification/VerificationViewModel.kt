@@ -20,10 +20,10 @@ class VerificationViewModel: ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    fun setAmbulances() {
+    fun setAmbulances(province : String) {
         _isLoading.value = true
         val retrofit = ApiConfigDriver.getRetrofitClientInstance()
-        retrofit.getAmbulances()
+        retrofit.getAmbulances(province)
             .enqueue(object : Callback<VerificationResponseX> {
                 override fun onResponse(
                     call: Call<VerificationResponseX>,

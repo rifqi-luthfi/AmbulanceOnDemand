@@ -97,7 +97,7 @@ class VerificationPage : AppCompatActivity() {
                 }
 
                 binding.tvNext.setOnClickListener {
-                    verificationViewModel.setAmbulances()
+                    verificationViewModel.setAmbulances("DKI Jakarta")
                     verificationViewModel.getAmbulances.observe(this){ destination ->
                         val driverName = destination.data?.get(0)?.namaDriver
                         val ambulanceNumber = destination.data?.get(0)?.platNomor

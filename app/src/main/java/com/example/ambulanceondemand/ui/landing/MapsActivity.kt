@@ -168,6 +168,39 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             drawPolyline(route)
             durationRoute(route)
         })
+
+    }
+
+    private fun setDataDriver() {
+        val name = intent.getStringExtra(EXTRA_DRIVER_NAME)
+        val number = intent.getStringExtra(EXTRA_AMBULANCE_NUMBER)
+        val pic = intent.getStringExtra(EXTRA_CONTACT_PIC_NUMBER)
+        val hospital = intent.getStringExtra(EXTRA_HOSPITAL_NAME)
+        val latDriver = intent.getStringExtra(EXTRA_DRIVER_LAT)
+        val lngDriver = intent.getStringExtra(EXTRA_DRIVER_LNG)
+//        val latLngDriver = LatLng(latDriver, lngDriver)
+
+        if (name.isNullOrEmpty()){
+            binding.clContainerBottom2.visibility = GONE
+            binding.clContainerBottom1.visibility = VISIBLE
+        }else{
+            binding.apply {
+                clContainerBottom2.visibility = VISIBLE
+                clContainerBottom1.visibility = GONE
+                tvNameDriverAmbulance.text = name
+                tvDestinationHospital.text = hospital
+                tvNumberDriverAmbulance.text = number
+
+//                val driverMarker = MarkerOptions()
+//                    .position(latLngDriver)
+//                    .title("Lokasi Pengemudi")
+//                    .icon(vectorToBitmap(R.drawable.ic_ambulance, Color.parseColor("#393996")))
+//
+//                mMap.addMarker(driverMarker)
+//                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(driverMarker, 15f))
+
+            }
+        }
     }
 
     private fun getCityName(lat: Double,long: Double):String{
@@ -205,28 +238,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val duration = response.routes?.get(0)?.legs?.get(0)?.duration
         val time = " ${duration?.text}"
         binding.tvTimePickerLocation.text = time
-    }
-
-    private fun setDataDriver() {
-        val name = intent.getStringExtra(EXTRA_DRIVER_NAME)
-        val number = intent.getStringExtra(EXTRA_AMBULANCE_NUMBER)
-        val pic = intent.getStringExtra(EXTRA_CONTACT_PIC_NUMBER)
-        val hospital = intent.getStringExtra(EXTRA_HOSPITAL_NAME)
-        val latDriver = intent.getStringExtra(EXTRA_DRIVER_LAT)
-        val lngDriver = intent.getStringExtra(EXTRA_DRIVER_LNG)
-
-        if (name.isNullOrEmpty()){
-            binding.clContainerBottom2.visibility = GONE
-            binding.clContainerBottom1.visibility = VISIBLE
-        }else{
-            binding.apply {
-                clContainerBottom2.visibility = VISIBLE
-                clContainerBottom1.visibility = GONE
-                tvNameDriverAmbulance.text = name
-                tvDestinationHospital.text = hospital
-                tvNumberDriverAmbulance.text = number
-            }
-        }
     }
 
     private fun vectorToBitmap(@DrawableRes id: Int, @ColorInt color: Int): BitmapDescriptor {
