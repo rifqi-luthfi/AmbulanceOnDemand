@@ -23,7 +23,7 @@
             android:name=".ui.CameraActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.VerificationPage"
+            android:name=".ui.verification.VerificationPage"
             android:exported="true"/>
         <activity
             android:name=".ui.view.ImageClassifierActivity"
@@ -41,7 +41,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyB2gcy6TtMyK59A9PM2RBQMyDf20tmlygw" />
+            android:value="AIzaSyC_0sInEOnyVaAOa768v9m37Mke11J072w" />
 
         <activity
             android:name=".ui.landing.MapsActivity"
