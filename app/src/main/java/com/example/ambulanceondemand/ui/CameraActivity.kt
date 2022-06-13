@@ -2,11 +2,8 @@ package com.example.ambulanceondemand.ui
 
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.WindowInsets
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -17,6 +14,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.ambulanceondemand.R
 import com.example.ambulanceondemand.databinding.ActivityCameraBinding
+import com.example.ambulanceondemand.ui.verification.VerificationPage
 import com.example.ambulanceondemand.util.createFile
 import java.lang.Exception
 import java.util.concurrent.ExecutorService

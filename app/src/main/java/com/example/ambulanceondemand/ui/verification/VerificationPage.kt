@@ -1,4 +1,4 @@
-package com.example.ambulanceondemand.ui
+package com.example.ambulanceondemand.ui.verification
 
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -7,17 +7,17 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import androidx.lifecycle.ViewModelProvider
 import com.example.ambulanceondemand.R
 import com.example.ambulanceondemand.databinding.ActivityVerificationPageBinding
+import com.example.ambulanceondemand.ui.CameraActivity
+import com.example.ambulanceondemand.ui.landing.MapsActivity
+import com.example.ambulanceondemand.ui.landing.MapsViewModel
 import com.example.ambulanceondemand.util.rotateBitmap
 import com.google.tflite.catvsdog.tflite.Classifier
-import id.byu.salesagen.external.extension.setColor
 import id.byu.salesagen.external.extension.textContent
 import java.io.File
 
@@ -26,6 +26,7 @@ class VerificationPage : AppCompatActivity() {
     private val mModelPath = "converted_model_malam_senin.tflite"
     private val mLabelPath = "labels.txt"
     private lateinit var classifier: Classifier
+    private lateinit var verificationViewModel: VerificationViewModel
 
     companion object {
         const val CAMERA_X_RESULT = 200
@@ -42,8 +43,16 @@ class VerificationPage : AppCompatActivity() {
         initClassifier()
         initViews()
         onFieldChange()
+        setupViewModel()
 
         binding.ivUpload.setOnClickListener { startCameraX() }
+        binding.ivBack.setOnClickListener {
+            finish()
+        }
+    }
+
+    private fun setupViewModel() {
+        verificationViewModel = ViewModelProvider(this)[VerificationViewModel::class.java]
     }
 
     private fun initClassifier() {
@@ -86,6 +95,31 @@ class VerificationPage : AppCompatActivity() {
                 binding.tvNext.apply {
                     setBackground(R.color.colorPrimary)
                 }
+
+                binding.tvNext.setOnClickListener {
+                    verificationViewModel.setAmbulances()
+                    verificationViewModel.getAmbulances.observe(this){ destination ->
+                        val driverName = destination.data?.get(0)?.namaDriver
+                        val ambulanceNumber = destination.data?.get(0)?.platNomor
+                        val contactPicAmbulance = destination.data?.get(0)?.kontakPicAmbulance
+                        val hospitalName = destination.data?.get(0)?.namaInstansi
+                        val driverLat = destination.data?.get(0)?.geopoint?._latitude
+                        val driverLng = destination.data?.get(0)?.geopoint?._longitude
+
+                        val intentOrderAmbulance = Intent(this@VerificationPage, MapsActivity::class.java).also {
+                            it.putExtra(MapsActivity.EXTRA_DRIVER_NAME , driverName)
+                            it.putExtra(MapsActivity.EXTRA_HOSPITAL_NAME , hospitalName)
+                            it.putExtra(MapsActivity.EXTRA_AMBULANCE_NUMBER , ambulanceNumber)
+                            it.putExtra(MapsActivity.EXTRA_CONTACT_PIC_NUMBER , contactPicAmbulance)
+                            it.putExtra(MapsActivity.EXTRA_DRIVER_LAT , driverLat)
+                            it.putExtra(MapsActivity.EXTRA_DRIVER_LNG , driverLng)
+
+                        }
+                        startActivity(intentOrderAmbulance)
+                        finish()
+                    }
+                }
+
             }
 
         }

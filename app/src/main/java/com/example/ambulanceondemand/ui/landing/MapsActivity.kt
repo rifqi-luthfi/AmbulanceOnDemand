@@ -1,7 +1,6 @@
 package com.example.ambulanceondemand.ui.landing
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -12,9 +11,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import com.example.ambulanceondemand.R
 
@@ -25,21 +22,14 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.ambulanceondemand.databinding.ActivityMapsBinding
-import com.example.ambulanceondemand.repository.RetrofitClient
-import com.example.ambulanceondemand.ui.VerificationPage
+import com.example.ambulanceondemand.ui.verification.VerificationPage
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.maps.android.PolyUtil
 import com.example.ambulanceondemand.ui.landing.model.DirectionResponses
-import com.example.ambulanceondemand.ui.landing.model.HospitalResponses
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Query
+import id.byu.salesagen.external.extension.GONE
+import id.byu.salesagen.external.extension.VISIBLE
 import java.util.*
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -60,8 +50,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(binding.root)
 
         setupViewModel()
+        setDataDriver()
 
-//        fkip = LatLng(-6.3037978, 106.8693713)
         monas = LatLng(-6.1890511, 106.8251573)
 
         binding.tvCallAmbulance.setOnClickListener {
@@ -212,7 +202,38 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun durationRoute(response : DirectionResponses) {
         val duration = response.routes?.get(0)?.legs?.get(0)?.duration
         val time = " ${duration?.text}"
-        binding.tvCallAmbulance.text = time
+        binding.tvTimePickerLocation.text = time
+    }
+
+    private fun setDataDriver() {
+        val name = intent.getStringExtra(EXTRA_DRIVER_NAME)
+        val number = intent.getStringExtra(EXTRA_AMBULANCE_NUMBER)
+        val pic = intent.getStringExtra(EXTRA_CONTACT_PIC_NUMBER)
+        val hospital = intent.getStringExtra(EXTRA_HOSPITAL_NAME)
+        val latDriver = intent.getStringExtra(EXTRA_DRIVER_LAT)
+        val lngDriver = intent.getStringExtra(EXTRA_DRIVER_LNG)
+
+        if (name.isNullOrEmpty()){
+            binding.clContainerBottom2.visibility = GONE
+            binding.clContainerBottom1.visibility = VISIBLE
+        }else{
+            binding.apply {
+                clContainerBottom2.visibility = VISIBLE
+                clContainerBottom1.visibility = GONE
+                tvNameDriverAmbulance.text = name
+                tvDestinationHospital.text = hospital
+                tvNumberDriverAmbulance.text = number
+            }
+        }
+    }
+
+    companion object {
+        const val EXTRA_DRIVER_NAME = "extra driver name"
+        const val EXTRA_AMBULANCE_NUMBER = "extra ambulance number"
+        const val EXTRA_CONTACT_PIC_NUMBER = "extra contact pic number"
+        const val EXTRA_HOSPITAL_NAME = "extra hospital name"
+        const val EXTRA_DRIVER_LAT = "extra driver lat"
+        const val EXTRA_DRIVER_LNG = "extra driver lng"
     }
 
 }
