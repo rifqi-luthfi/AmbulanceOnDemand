@@ -131,7 +131,6 @@
                 map:layout_constraintStart_toStartOf="parent"
                 map:layout_constraintTop_toBottomOf="@id/divider" />
 
-
             <TextView
                 android:id="@+id/actvDropLocation"
                 android:layout_width="match_parent"

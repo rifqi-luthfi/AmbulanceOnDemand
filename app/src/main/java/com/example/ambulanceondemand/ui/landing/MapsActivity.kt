@@ -12,7 +12,10 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModelProvider
 import com.example.ambulanceondemand.R
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -22,6 +25,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.ambulanceondemand.databinding.ActivityMapsBinding
+import com.example.ambulanceondemand.repository.RetrofitClient
 import com.example.ambulanceondemand.ui.VerificationPage
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -42,10 +46,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
+    private lateinit var mapsViewModel: MapsViewModel
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-    private lateinit var fkip: LatLng
+//    private lateinit var fkip: LatLng
     private lateinit var monas: LatLng
+    private lateinit var destinationHospital: LatLng
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +59,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        fkip = LatLng(-6.3037978, 106.8693713)
+        setupViewModel()
+
+//        fkip = LatLng(-6.3037978, 106.8693713)
         monas = LatLng(-6.1890511, 106.8251573)
 
         binding.tvCallAmbulance.setOnClickListener {
@@ -68,10 +76,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
     }
 
+    private fun setupViewModel() {
+        mapsViewModel = ViewModelProvider(this)[MapsViewModel::class.java]
+    }
+
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
         getMyLastLocation()
+
     }
 
     private val requestPermissionLauncher =
@@ -92,12 +105,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
         }
+
     private fun checkPermission(permission: String): Boolean {
         return ContextCompat.checkSelfPermission(
             this,
             permission
         ) == PackageManager.PERMISSION_GRANTED
     }
+
     private fun getMyLastLocation() {
         if     (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) &&
             checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -122,69 +137,50 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             )
         }
     }
+
     private fun showStartMarker(location: Location) {
+
         val startLocation = LatLng(location.latitude, location.longitude)
         mMap.addMarker(
             MarkerOptions()
                 .position(startLocation)
-                .title(getCityName(location.latitude,location.longitude))
+                .title("Lokasi Jemput")
         )
-
-        val markerMonas = MarkerOptions()
-            .position(monas)
-            .title("Monas")
-
-        mMap.addMarker(markerMonas)
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(monas, 11.6f))
-
-
-
-        val locationPoint = location.latitude.toString() + "," + location.longitude.toString()
-        val locationDestination = monas.latitude.toString() + "," + monas.longitude.toString()
-
-        val apiServices = RetrofitClient.apiServices(this)
-        apiServices.getHospital(locationPoint, 3000, "hospital" , "AIzaSyC3RwBupXyFdul5XtIAWjDsF9f8ogyLam4")
-            .enqueue(object : Callback<HospitalResponses> {
-                override fun onResponse(call: Call<HospitalResponses>, response: Response<HospitalResponses>) {
-                    val hospitalName = response.body()?.results?.get(0)?.name
-                    val hospitalLat = response.body()?.results?.get(0)?.geometry?.location?.lat.toString()
-                    val hospitalLong = response.body()?.results?.get(0)?.geometry?.location?.lng.toString()
-                    val hospitalDestination = "${hospitalLat},${hospitalLong}"
-
-                    binding.actvDropLocation.text = hospitalName
-
-                    Log.d("hospital berhasil", "${hospitalName}")
-                }
-
-                override fun onFailure(call: Call<HospitalResponses>, t: Throwable) {
-                    Log.e("hospital error", t.localizedMessage)
-                }
-            })
-
-        apiServices.getDirection(locationPoint, locationDestination, "AIzaSyC3RwBupXyFdul5XtIAWjDsF9f8ogyLam4")
-            .enqueue(object : Callback<DirectionResponses> {
-                override fun onResponse(call: Call<DirectionResponses>, response: Response<DirectionResponses>) {
-                    drawPolyline(response)
-                    durationRoute(response)
-                    Log.d("bisa dong oke", response.message())
-                }
-
-                override fun onFailure(call: Call<DirectionResponses>, t: Throwable) {
-                    Log.e("anjir error", t.localizedMessage)
-                }
-            })
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation, 17f))
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(startLocation, 14f))
         Log.d("Debug:" ,"Your Location:"+ location.longitude)
-        binding.actvDropLocation.text = getCityName(monas.latitude,monas.longitude)
+
         binding.actvPickUpLocation.text = getCityName(location.latitude,location.longitude)
 
+        val locationPoint = location.latitude.toString() + "," + location.longitude.toString()
+        mapsViewModel.setDestination(locationPoint, 5000, "hospital" , "AIzaSyC3RwBupXyFdul5XtIAWjDsF9f8ogyLam4")
 
+
+        mapsViewModel.getDestination.observe(this) { destination ->
+            val destinastionLat = destination.results?.get(0)?.geometry?.location?.lat
+            val destinastionLong = destination.results?.get(0)?.geometry?.location?.lng
+            destinationHospital = LatLng(destinastionLat!!, destinastionLong!!)
+            val destinationMarker = MarkerOptions()
+                .position(destinationHospital)
+                .title("Lokasi Antar")
+
+            mMap.addMarker(destinationMarker)
+
+            val locationDestination = destinastionLat.toString() + "," + destinastionLong.toString()
+            mapsViewModel.setRoute(locationPoint, locationDestination, "AIzaSyC3RwBupXyFdul5XtIAWjDsF9f8ogyLam4")
+
+            binding.actvDropLocation.text = destination.results.get(0)?.name
+
+        }
+
+        mapsViewModel.getRoute.observe(this, { route ->
+            drawPolyline(route)
+            durationRoute(route)
+        })
     }
 
     private fun getCityName(lat: Double,long: Double):String{
-        var geoCoder = Geocoder(this, Locale.getDefault())
-        var Adress = geoCoder.getFromLocation(lat,long,5)
+        val geoCoder = Geocoder(this, Locale.getDefault())
+        val Adress = geoCoder.getFromLocation(lat,long,5)
 
         val street = Adress.get(0).thoroughfare
         val numStreet = Adress.get(0).subThoroughfare
@@ -204,8 +200,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
          */
     }
 
-    private fun drawPolyline(response: Response<DirectionResponses>) {
-        val shape = response.body()?.routes?.get(0)?.overviewPolyline?.points
+    private fun drawPolyline(response : DirectionResponses) {
+        val shape = response.routes?.get(0)?.overviewPolyline?.points
         val polyline = PolylineOptions()
             .addAll(PolyUtil.decode(shape))
             .width(8f)
@@ -213,34 +209,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.addPolyline(polyline)
     }
 
-    private fun durationRoute(response: Response<DirectionResponses>) {
-        val duration = response.body()?.routes?.get(0)?.legs?.get(0)?.duration
+    private fun durationRoute(response : DirectionResponses) {
+        val duration = response.routes?.get(0)?.legs?.get(0)?.duration
         val time = " ${duration?.text}"
         binding.tvCallAmbulance.text = time
-    }
-
-    private interface ApiServices {
-        @GET("maps/api/directions/json")
-        fun getDirection(@Query("origin") origin: String,
-                         @Query("destination") destination: String,
-                         @Query("key") apiKey: String): Call<DirectionResponses>
-
-        @GET("maps/api/place/nearbysearch/json")
-        fun getHospital(@Query("location") location: String,
-                        @Query("radius") radius: Int,
-                        @Query("type") type: String,
-                        @Query("key") apiKey: String): Call<HospitalResponses>
-    }
-
-    private object RetrofitClient {
-        fun apiServices(context: Context): ApiServices {
-            val retrofit = Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(context.resources.getString(R.string.base_url))
-                .build()
-
-            return retrofit.create<ApiServices>(ApiServices::class.java)
-        }
     }
 
 }
