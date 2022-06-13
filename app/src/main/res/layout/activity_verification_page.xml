@@ -74,15 +74,26 @@
                 app:layout_constraintBottom_toTopOf="@id/tvPhone"/>
 
             <TextView
+                android:id="@+id/tvAlertName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="*Masukkan Nama Kamu Terlebih dahulu"
+                android:fontFamily="@font/gillroy_light"
+                android:textSize="8sp"
+                android:visibility="gone"
+                android:layout_marginBottom="6dp"
+                app:layout_constraintTop_toBottomOf="@id/etName"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
                 android:id="@+id/tvPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Masukan no. ponsel kamu"
                 android:fontFamily="@font/gillroy_bold"
-                android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@id/etName"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/etPhone"/>
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@id/tvAlertName"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <EditText
                 android:id="@+id/etPhone"
@@ -91,10 +102,23 @@
                 android:hint="Pastikan nomor aktif untuk dihubungi"
                 android:fontFamily="@font/gilroy_medium"
                 android:padding="12dp"
+                android:inputType="phone"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/bg_form_input"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvPhone"/>
+
+            <TextView
+                android:id="@+id/tvAlertPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="*Masukkan No. Ponselmu Terlebih dahulu"
+                android:fontFamily="@font/gillroy_light"
+                android:textSize="8sp"
+                android:visibility="gone"
+                android:layout_marginBottom="6dp"
+                app:layout_constraintTop_toBottomOf="@id/etPhone"
+                app:layout_constraintStart_toStartOf="parent"/>
 
             <TextView
                 android:id="@+id/tvRadio"
@@ -102,8 +126,8 @@
                 android:layout_height="wrap_content"
                 android:text="Bagaimana keadaan pasien ?"
                 android:fontFamily="@font/gillroy_bold"
-                android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@id/etPhone"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@id/tvAlertPhone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/rgCondition"/>
 
@@ -175,14 +199,16 @@
                 android:id="@+id/tvNext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_button"
+                android:background="@color/grey"
                 android:fontFamily="@font/gilroy_medium"
                 android:padding="15dp"
                 android:layout_marginTop="24dp"
                 android:text="Lanjutkan"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                app:layout_constraintTop_toBottomOf="@id/ivUpload" />
+                app:layout_constraintTop_toBottomOf="@id/ivUpload"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

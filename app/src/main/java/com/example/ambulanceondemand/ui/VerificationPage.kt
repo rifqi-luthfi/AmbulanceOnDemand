@@ -9,12 +9,16 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.ambulanceondemand.R
 import com.example.ambulanceondemand.databinding.ActivityVerificationPageBinding
 import com.example.ambulanceondemand.util.rotateBitmap
 import com.google.tflite.catvsdog.tflite.Classifier
+import id.byu.salesagen.external.extension.setColor
+import id.byu.salesagen.external.extension.textContent
 import java.io.File
 
 class VerificationPage : AppCompatActivity() {
@@ -37,6 +41,7 @@ class VerificationPage : AppCompatActivity() {
 
         initClassifier()
         initViews()
+        onFieldChange()
 
         binding.ivUpload.setOnClickListener { startCameraX() }
     }
@@ -73,10 +78,38 @@ class VerificationPage : AppCompatActivity() {
 
             if (predict.get(0).title == "No_accident"){
                 binding.tvStatusAccident.text = "Tidak Tergolong Kecelakaan"
+                binding.tvNext.apply {
+                    setBackground(R.color.grey)
+                }
             }else{
                 binding.tvStatusAccident.text = "Tergolong Kecelakaan"
+                binding.tvNext.apply {
+                    setBackground(R.color.colorPrimary)
+                }
             }
 
+        }
+    }
+
+    private fun View.setBackground(resDrawableId: Int) {
+        background = ContextCompat.getDrawable(context, resDrawableId)
+    }
+
+    private fun onFieldChange() {
+        binding.apply {
+            etPhone.addTextChangedListener {
+                val fieldName = etName.textContent().isNotEmpty()
+                val fieldPhone = etPhone.textContent().isNotEmpty() && etPhone.textContent().length >= 11
+                if ( fieldName && fieldPhone ) {
+                    tvNext.apply {
+                        setBackground(R.color.colorPrimary)
+                    }
+                } else {
+                    tvNext.apply {
+                        setBackground(R.color.grey)
+                    }
+                }
+            }
         }
     }
 
@@ -84,4 +117,5 @@ class VerificationPage : AppCompatActivity() {
             val intent = Intent(this, CameraActivity::class.java)
             launcherIntentCameraX.launch(intent)
     }
+
 }
