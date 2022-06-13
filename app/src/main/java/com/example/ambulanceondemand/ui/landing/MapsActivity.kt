@@ -3,6 +3,8 @@ package com.example.ambulanceondemand.ui.landing
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
 import android.location.Geocoder
 import android.location.Location
@@ -11,7 +13,11 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.ColorInt
+import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.ambulanceondemand.R
 
@@ -19,15 +25,13 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.example.ambulanceondemand.databinding.ActivityMapsBinding
 import com.example.ambulanceondemand.ui.verification.VerificationPage
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.model.PolylineOptions
 import com.google.maps.android.PolyUtil
 import com.example.ambulanceondemand.ui.landing.model.DirectionResponses
+import com.google.android.gms.maps.model.*
 import id.byu.salesagen.external.extension.GONE
 import id.byu.salesagen.external.extension.VISIBLE
 import java.util.*
@@ -39,8 +43,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mapsViewModel: MapsViewModel
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-//    private lateinit var fkip: LatLng
-    private lateinit var monas: LatLng
     private lateinit var destinationHospital: LatLng
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,11 +54,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         setupViewModel()
         setDataDriver()
 
-        monas = LatLng(-6.1890511, 106.8251573)
-
         binding.tvCallAmbulance.setOnClickListener {
             val intentVerification = Intent(this, VerificationPage::class.java)
             startActivity(intentVerification)
+            finish()
         }
 
         val mapFragment = supportFragmentManager
@@ -152,6 +153,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             val destinationMarker = MarkerOptions()
                 .position(destinationHospital)
                 .title("Lokasi Antar")
+                .icon(vectorToBitmap(R.drawable.ic_destination, Color.parseColor("#AE0505")))
 
             mMap.addMarker(destinationMarker)
 
@@ -225,6 +227,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 tvNumberDriverAmbulance.text = number
             }
         }
+    }
+
+    private fun vectorToBitmap(@DrawableRes id: Int, @ColorInt color: Int): BitmapDescriptor {
+        val vectorDrawable = ResourcesCompat.getDrawable(resources, id, null)
+        val bitmap = Bitmap.createBitmap(
+            vectorDrawable!!.intrinsicWidth,
+            vectorDrawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(bitmap)
+        vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
+        DrawableCompat.setTint(vectorDrawable, color)
+        vectorDrawable.draw(canvas)
+        return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 
     companion object {
