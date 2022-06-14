@@ -8,6 +8,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.location.Geocoder
 import android.location.Location
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -53,6 +54,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         setupViewModel()
         setDataDriver()
+        val pic = intent.getStringExtra(EXTRA_CONTACT_PIC_NUMBER)
+        if (pic != null) {
+            binding.tvSendSMSDriver.setOnClickListener{
+                goToWhatapp(pic)
+            }
+        }
 
         binding.tvCallAmbulance.setOnClickListener {
             val intentVerification = Intent(this, VerificationPage::class.java)
@@ -174,7 +181,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun setDataDriver() {
         val name = intent.getStringExtra(EXTRA_DRIVER_NAME)
         val number = intent.getStringExtra(EXTRA_AMBULANCE_NUMBER)
-        val pic = intent.getStringExtra(EXTRA_CONTACT_PIC_NUMBER)
         val hospital = intent.getStringExtra(EXTRA_HOSPITAL_NAME)
         val latDriver = intent.getStringExtra(EXTRA_DRIVER_LAT)
         val lngDriver = intent.getStringExtra(EXTRA_DRIVER_LNG)
@@ -252,6 +258,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         DrawableCompat.setTint(vectorDrawable, color)
         vectorDrawable.draw(canvas)
         return BitmapDescriptorFactory.fromBitmap(bitmap)
+    }
+
+    private fun goToWhatapp(pic : String){
+        startActivity(
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(
+                        "https://api.whatsapp.com/send?phone=6281533375594&text=Halo Pak, Saya yang memesan Ambulance. Terimakasih!!!"
+                )
+            )
+        )
     }
 
     companion object {

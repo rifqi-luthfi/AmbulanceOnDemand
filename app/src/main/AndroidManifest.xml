@@ -17,16 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AmbulanceOnDemand">
         <activity
-            android:name=".ui.MainActivity"
-            android:exported="true" />
-        <activity
             android:name=".ui.CameraActivity"
             android:exported="false" />
         <activity
             android:name=".ui.verification.VerificationPage"
-            android:exported="true"/>
-        <activity
-            android:name=".ui.view.ImageClassifierActivity"
             android:exported="true"/>
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
@@ -41,7 +35,9 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyB2gcy6TtMyK59A9PM2RBQMyDf20tmlygw" />
+            android:value="AIzaSyC_0sInEOnyVaAOa768v9m37Mke11J072w"
+            />
+
 
         <activity
             android:name=".ui.landing.MapsActivity"
