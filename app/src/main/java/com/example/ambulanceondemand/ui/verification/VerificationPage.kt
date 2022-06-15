@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
@@ -50,10 +51,9 @@ class VerificationPage : AppCompatActivity() {
         binding = ActivityVerificationPageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initClassifier()
-        initViews()
-        onFieldChange()
         setupViewModel()
+        onFieldChange()
+        initClassifier()
 
         binding.ivUpload.setOnClickListener { startCameraX() }
         binding.ivBack.setOnClickListener {
@@ -68,12 +68,6 @@ class VerificationPage : AppCompatActivity() {
 
     private fun initClassifier() {
         classifier = Classifier(assets, mModelPath, mLabelPath, mInputSize)
-    }
-
-    private fun initViews() {
-        findViewById<ImageView>(R.id.ivUpload)
-
-//        runOnUiThread { Toast.makeText(this, result.get(0).title, Toast.LENGTH_SHORT).show() }
     }
 
     private var getFile: File? = null
@@ -101,22 +95,24 @@ class VerificationPage : AppCompatActivity() {
                 binding.tvNext.apply {
                     setBackground(R.color.grey)
                 }
+                binding.tvNext.setOnClickListener {
+                    Toast.makeText(this, "Maaf foto terindikasi palsu", Toast.LENGTH_SHORT).show()
+                }
             }else{
                 binding.tvStatusAccident.text = "Tergolong Kecelakaan"
                 binding.tvNext.apply {
                     setBackground(R.color.colorPrimary)
                 }
-
                 //klik tombol next
                 binding.tvNext.setOnClickListener {
+                    showLoading(true)
                     verificationViewModel.setVerification(ModelPreference(VERIFICATION))
+                    showLoading(false)
                     val intentOrderAmbulance = Intent(this@VerificationPage, MapsActivity::class.java)
                     startActivity(intentOrderAmbulance)
                     finish()
                 }
-
             }
-
         }
     }
 
@@ -127,15 +123,17 @@ class VerificationPage : AppCompatActivity() {
     private fun onFieldChange() {
         binding.apply {
             etPhone.addTextChangedListener {
-                val fieldName = etName.textContent().isNotEmpty()
-                val fieldPhone = etPhone.textContent().isNotEmpty() && etPhone.textContent().length >= 11
-                if ( fieldName && fieldPhone ) {
-                    tvNext.apply {
-                        setBackground(R.color.colorPrimary)
+                val nameField = etName.text
+                val phoneField = etPhone.text
+                when {
+                    nameField.isEmpty() -> {
+                        etName.error = "Masukkan Nama terlebih dahulu"
                     }
-                } else {
-                    tvNext.apply {
-                        setBackground(R.color.grey)
+                    phoneField.isEmpty() -> {
+                        etPhone.error = "Masukkan No.Ponsel telebih dahulu"
+                    }
+                    phoneField.length <= 11 -> {
+                        etPhone.error = "Masukkan Nomor Ponsel yang benar"
                     }
                 }
             }
@@ -147,4 +145,7 @@ class VerificationPage : AppCompatActivity() {
             launcherIntentCameraX.launch(intent)
     }
 
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
 }

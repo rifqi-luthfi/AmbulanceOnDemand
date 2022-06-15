@@ -61,17 +61,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(binding.root)
 
         setupViewModel()
-//        setDataDriver()
-//        val pic = intent.getStringExtra(EXTRA_CONTACT_PIC_NUMBER)
-//        if (pic != null) {
-//            binding.tvSendSMSDriver.setOnClickListener{
-//                goToWhatapp(pic)
-//            }
-//        }
-
+        mapsViewModel.isLoading.observe(this) {
+            showLoading(it)
+        }
         binding.tvCallAmbulance.setOnClickListener {
-            val intentVerification = Intent(this, VerificationPage::class.java)
-            startActivity(intentVerification)
+            startActivity(
+                Intent(this, VerificationPage::class.java)
+            )
         }
 
         val mapFragment = supportFragmentManager
@@ -187,7 +183,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 })
             }
             else {
-                var timer = object : CountDownTimer(5000, 1000){
+                val timer = object : CountDownTimer(5000, 1000){
                     override fun onTick(p0: Long) {
                     }
                     override fun onFinish() {
@@ -212,20 +208,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 val locationPoint = location.latitude.toString() + "," + location.longitude.toString()
                 mapsViewModel.setDestination(locationPoint, 5000, "hospital" , "AIzaSyC3RwBupXyFdul5XtIAWjDsF9f8ogyLam4")
-                mapsViewModel.setAmbulances("DKI Jakarta")
+//                mapsViewModel.setAmbulances("DKI Jakarta")
+                mapsViewModel.setNearAmbulance(locationPoint, 10000)
 
                 //menampilkan nama lokasi antar di textview destination
                 mapsViewModel.getDestination.observe(this) { destination ->
                     binding.actvDropLocation.text = destination.results?.get(0)?.name
                 }
 
-                mapsViewModel.getAmbulances.observe(this) { ambulance ->
-                    val driverName = ambulance.data?.get(0)?.namaDriver
-                    val ambulancePlat = ambulance.data?.get(0)?.platNomor
-                    val ambulanceContact = ambulance.data?.get(0)?.kontakPicAmbulance
-                    val hospitalName = ambulance.data?.get(0)?.namaInstansi
-                    val driverLat = ambulance.data?.get(0)?.geopoint?._latitude
-                    val driverLong = ambulance.data?.get(0)?.geopoint?._longitude
+                mapsViewModel.getNearAmbulance.observe(this) { ambulance ->
+                    val driverName = ambulance.ambulances?.get(0)?.namaDriver
+                    val ambulancePlat = ambulance.ambulances?.get(0)?.platNomor
+                    val ambulanceContact = ambulance.ambulances?.get(0)?.kontakPicAmbulance
+                    val hospitalName = ambulance.ambulances?.get(0)?.namaInstansi
+                    val driverLat = ambulance.ambulances?.get(0)?.geopoint?._latitude
+                    val driverLong = ambulance.ambulances?.get(0)?.geopoint?._longitude
                     ambulancePosition = LatLng(driverLat!!, driverLong!!)
 
                     val ambulanceMarker = MarkerOptions()
@@ -243,7 +240,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                             goToWhatapp(ambulanceContact!!)
                         }
                         tvCallDriver.setOnClickListener {
-                            mapsViewModel.setVerification(ModelPreference(false))
+                            goToCall(ambulanceContact!!)
                         }
                     }
 
@@ -252,42 +249,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 }
 
-                mapsViewModel.getRoute.observe(this, { route ->
+                mapsViewModel.getRoute.observe(this) { route ->
                     drawPolyline(route)
                     durationRoute(route)
-                })
+                }
 
-
-            }
-        }
-    }
-
-    private fun setDataDriver() {
-        val name = intent.getStringExtra(EXTRA_DRIVER_NAME)
-        val number = intent.getStringExtra(EXTRA_AMBULANCE_NUMBER)
-        val hospital = intent.getStringExtra(EXTRA_HOSPITAL_NAME)
-        val latDriver = intent.getStringExtra(EXTRA_DRIVER_LAT)
-        val lngDriver = intent.getStringExtra(EXTRA_DRIVER_LNG)
-//        val latLngDriver = LatLng(latDriver, lngDriver)
-
-        if (name.isNullOrEmpty()){
-            binding.clContainerBottom2.visibility = GONE
-            binding.clContainerBottom1.visibility = VISIBLE
-        }else{
-            binding.apply {
-                clContainerBottom2.visibility = VISIBLE
-                clContainerBottom1.visibility = GONE
-                tvNameDriverAmbulance.text = name
-                tvDestinationHospital.text = hospital
-                tvNumberDriverAmbulance.text = number
-
-//                val driverMarker = MarkerOptions()
-//                    .position(latLngDriver)
-//                    .title("Lokasi Pengemudi")
-//                    .icon(vectorToBitmap(R.drawable.ic_ambulance, Color.parseColor("#393996")))
-//
-//                mMap.addMarker(driverMarker)
-//                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(driverMarker, 15f))
 
             }
         }
@@ -307,11 +273,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         return cityName
 
         /**
+         * thoroughfare = nama jalan
+         * subthoroughfare = nomor rumah
          * sublocality = kelurahan
          * locality = kecamatan
          * countryName = negara
-         * thoroughfare = nama jalan
-         * subthoroughfare = nomor rumah
          */
     }
 
@@ -320,7 +286,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val polyline = PolylineOptions()
             .addAll(PolyUtil.decode(shape))
             .width(8f)
-            .color(Color.RED)
+            .color(Color.BLUE)
         mMap.addPolyline(polyline)
     }
 
@@ -355,13 +321,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         )
     }
 
-    companion object {
-        const val EXTRA_DRIVER_NAME = "extra driver name"
-        const val EXTRA_AMBULANCE_NUMBER = "extra ambulance number"
-        const val EXTRA_CONTACT_PIC_NUMBER = "extra contact pic number"
-        const val EXTRA_HOSPITAL_NAME = "extra hospital name"
-        const val EXTRA_DRIVER_LAT = "extra driver lat"
-        const val EXTRA_DRIVER_LNG = "extra driver lng"
+    private fun goToCall(contact: String) {
+        startActivity(
+            Intent(
+                Intent.ACTION_DIAL,
+                Uri.parse("tel:$contact")
+            )
+        )
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
 }
