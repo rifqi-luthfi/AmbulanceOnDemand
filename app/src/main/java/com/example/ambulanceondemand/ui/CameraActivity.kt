@@ -4,11 +4,9 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCaptureException
-import androidx.camera.core.Preview
+import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -27,6 +25,7 @@ class CameraActivity : AppCompatActivity() {
 
     private var cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
     private var imageCapture: ImageCapture? = null
+    private var flashEnable = false
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -52,6 +51,8 @@ class CameraActivity : AppCompatActivity() {
         binding = ActivityCameraBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        flashMode()
+
         cameraExecutor = Executors.newSingleThreadExecutor()
 
         binding.ibBack.setOnClickListener {
@@ -75,6 +76,7 @@ class CameraActivity : AppCompatActivity() {
                 REQUEST_CODE_PERMISSIONS
             )
         }
+
     }
 
     public override fun onResume() {
@@ -151,7 +153,38 @@ class CameraActivity : AppCompatActivity() {
         }, ContextCompat.getMainExecutor(this))
     }
 
+    private fun flashMode() {
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
+        // Used to bind the lifecycle of cameras to the lifecycle owner
+        val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+        val preview = Preview.Builder()
+            .build()
+            .also {
+                it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
+            }
+        val camera = cameraProvider.bindToLifecycle(
+            this, cameraSelector, preview
+        )
+
+        if (camera.cameraInfo.hasFlashUnit()) {
+            binding.ibFlash.setOnClickListener {
+                camera.cameraControl.enableTorch(!flashEnable)
+            }
+            camera.cameraInfo.torchState.observe(this) {
+                if (it == TorchState.ON) {
+                    flashEnable = true
+                    binding.ibFlash.setImageResource(R.drawable.ic_flash_on)
+                } else {
+                    flashEnable = false
+                    binding.ibFlash.setImageResource(R.drawable.ic_flash_off)
+                }
+            }
+        }
+
+    }
+
     companion object {
+        const val TAG = "camera activity"
         private val REQUIRED_PERMISSIONS = arrayOf(android.Manifest.permission.CAMERA)
         private const val REQUEST_CODE_PERMISSIONS = 10
     }

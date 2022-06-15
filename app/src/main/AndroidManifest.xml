@@ -36,7 +36,8 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB2gcy6TtMyK59A9PM2RBQMyDf20tmlygw" />
-<!--            android:value="AIzaSyC_0sInEOnyVaAOa768v9m37Mke11J072w" />-->
+<!--            aiza rifqi="AIzaSyC_0sInEOnyVaAOa768v9m37Mke11J072w" />-->
+<!--            aiza dzul="AIzaSyB2gcy6TtMyK59A9PM2RBQMyDf20tmlygw" />-->
 
 
         <activity
