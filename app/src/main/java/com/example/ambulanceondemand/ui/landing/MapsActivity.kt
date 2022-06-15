@@ -12,7 +12,9 @@ import android.location.Location
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.ColorInt
@@ -185,6 +187,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 })
             }
             else {
+                var timer = object : CountDownTimer(5000, 1000){
+                    override fun onTick(p0: Long) {
+                    }
+                    override fun onFinish() {
+                        binding.clDriverToastSuccess.visibility = View.GONE
+                    }
+                }
+
+                binding.clDriverToastSuccess.visibility = View.VISIBLE
+                timer.start()
+
                 binding.clContainerBottom2.visibility = VISIBLE
                 binding.clContainerBottom1.visibility = GONE
                 //marker lokasi kamu

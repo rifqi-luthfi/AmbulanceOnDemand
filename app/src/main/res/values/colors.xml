@@ -7,6 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="white2">#F6F6F6</color>
 
     //landing Color
     <color name="colorPrimary">#00AEEF</color>
@@ -17,5 +18,27 @@
     //verification color
     <color name="grey">#9DA3AE</color>
 
+
+    //
+    <color name="colorPrimaryLight">#26c0ff</color>
+    <color name="colorPrimaryExtraLight">#CC54B9EC</color>
+    <color name="colorPrimaryDark">#00bcf1</color>
+    <color name="colorAccent">#1F2D3D</color>
+    <color name="colorAccentDark">#005bbf</color>
+    <color name="colorGreyDark">#1f2d3d</color>
+    <color name="colorGrey">#6a7481</color>
+    <color name="colorSolidGray">#6a7481</color>
+    <color name="colorGreySecond">#b8c1cb</color>
+    <color name="colorGreyLight">#F4F4F4</color>
+    <color name="colorGreyDark2">#00ffffff</color>
+    <color name="colorBlack">#121212</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorTransparent">#00000000</color>
+    <color name="colorHalfTransparent">#20000000</color>
+    <color name="colorHalfTransparentDark">#50000000</color>
+    <color name="colorYellow">#DF9A14</color>
+    <color name="colorYellowBright">#FDB427</color>
+    <color name="colorYellowDark">#FFF6DB</color>
+    <color name="colorYellowDarkSecond">#F8CF5A</color>
 
 </resources>

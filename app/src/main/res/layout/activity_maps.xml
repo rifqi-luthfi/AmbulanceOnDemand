@@ -212,6 +212,30 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clDriverToastSuccess"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        map:layout_constraintBottom_toBottomOf="parent"
+        map:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/tvToastDriver"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/redPrimary"
+            android:fontFamily="@font/gilroy_medium"
+            android:padding="15dp"
+            android:text="Ambulance Kamu Akan Segera Tiba"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            map:layout_constraintBottom_toBottomOf="parent"
+            map:layout_constraintTop_toTopOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clContainerBottom2"
         android:layout_width="match_parent"
         android:layout_height="200dp"

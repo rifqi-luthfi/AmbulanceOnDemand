@@ -11,17 +11,26 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_icon_kitabisa"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_icon_kitabisa_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AmbulanceOnDemand">
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".ui.splash.SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.CameraActivity"
             android:exported="false" />
         <activity
             android:name=".ui.verification.VerificationPage"
-            android:exported="true"/>
+            android:exported="true" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
@@ -35,21 +44,12 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyB2gcy6TtMyK59A9PM2RBQMyDf20tmlygw" />
-<!--            aiza rifqi="AIzaSyC_0sInEOnyVaAOa768v9m37Mke11J072w" />-->
-<!--            aiza dzul="AIzaSyB2gcy6TtMyK59A9PM2RBQMyDf20tmlygw" />-->
-
-
+            android:value="AIzaSyAzJDosnBbvMw05xpznu02A69BX_SMaY1k" /> <!-- aiza rifqi="AIzaSyC_0sInEOnyVaAOa768v9m37Mke11J072w" /> -->
+        <!-- aiza dzul="AIzaSyB2gcy6TtMyK59A9PM2RBQMyDf20tmlygw" /> -->
         <activity
             android:name=".ui.landing.MapsActivity"
             android:exported="true"
-            android:label="@string/title_activity_maps">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:label="@string/title_activity_maps"/>
     </application>
 
 </manifest>
