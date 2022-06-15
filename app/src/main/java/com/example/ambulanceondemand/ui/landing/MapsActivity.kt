@@ -65,9 +65,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             showLoading(it)
         }
         binding.tvCallAmbulance.setOnClickListener {
-            startActivity(
-                Intent(this, VerificationPage::class.java)
-            )
+            val intentVerif = Intent(this, VerificationPage::class.java)
+            intentVerif.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intentVerif)
         }
 
         val mapFragment = supportFragmentManager
@@ -182,6 +182,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     durationRoute(route)
                 })
             }
+
+            /**
+             * setelah melakukan verifikasi
+             */
             else {
                 val timer = object : CountDownTimer(5000, 1000){
                     override fun onTick(p0: Long) {
@@ -209,7 +213,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 val locationPoint = location.latitude.toString() + "," + location.longitude.toString()
                 mapsViewModel.setDestination(locationPoint, 5000, "hospital" , "AIzaSyC3RwBupXyFdul5XtIAWjDsF9f8ogyLam4")
 //                mapsViewModel.setAmbulances("DKI Jakarta")
-                mapsViewModel.setNearAmbulance(locationPoint, 10000)
+                mapsViewModel.setNearAmbulance(locationPoint, 100000)
 
                 //menampilkan nama lokasi antar di textview destination
                 mapsViewModel.getDestination.observe(this) { destination ->
@@ -253,8 +257,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     drawPolyline(route)
                     durationRoute(route)
                 }
-
-
             }
         }
     }
