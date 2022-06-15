@@ -1,7 +1,5 @@
 package id.byu.salesagen.external.extension
 
-
-
 //fun Context.isLoggedIn() : Boolean{
 //    val sharedPrefUtil = SharedPrefUtil(this)
 //    return sharedPrefUtil.isLoggedIn()

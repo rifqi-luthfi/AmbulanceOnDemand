@@ -44,8 +44,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAzJDosnBbvMw05xpznu02A69BX_SMaY1k" /> <!-- aiza rifqi="AIzaSyC_0sInEOnyVaAOa768v9m37Mke11J072w" /> -->
-        <!-- aiza dzul="AIzaSyB2gcy6TtMyK59A9PM2RBQMyDf20tmlygw" /> -->
+            android:value="AIzaSyAzJDosnBbvMw05xpznu02A69BX_SMaY1k" />
         <activity
             android:name=".ui.landing.MapsActivity"
             android:exported="true"
