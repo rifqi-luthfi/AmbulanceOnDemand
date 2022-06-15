@@ -1,6 +1,7 @@
 package com.example.ambulanceondemand.ui.landing
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -32,6 +33,10 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.maps.android.PolyUtil
 import com.example.ambulanceondemand.ui.landing.model.DirectionResponses
+import com.example.ambulanceondemand.ui.landing.model.ModelPreference
+import com.example.ambulanceondemand.ui.verification.dataStore
+import com.example.ambulanceondemand.util.UserPreference
+import com.example.ambulanceondemand.util.ViewModelFactory
 import com.google.android.gms.maps.model.*
 import id.byu.salesagen.external.extension.GONE
 import id.byu.salesagen.external.extension.VISIBLE
@@ -44,7 +49,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mapsViewModel: MapsViewModel
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-    private lateinit var destinationHospital: LatLng
+    private lateinit var destinationPosition: LatLng
+    private lateinit var ambulancePosition: LatLng
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,18 +59,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(binding.root)
 
         setupViewModel()
-        setDataDriver()
-        val pic = intent.getStringExtra(EXTRA_CONTACT_PIC_NUMBER)
-        if (pic != null) {
-            binding.tvSendSMSDriver.setOnClickListener{
-                goToWhatapp(pic)
-            }
-        }
+//        setDataDriver()
+//        val pic = intent.getStringExtra(EXTRA_CONTACT_PIC_NUMBER)
+//        if (pic != null) {
+//            binding.tvSendSMSDriver.setOnClickListener{
+//                goToWhatapp(pic)
+//            }
+//        }
 
         binding.tvCallAmbulance.setOnClickListener {
             val intentVerification = Intent(this, VerificationPage::class.java)
             startActivity(intentVerification)
-            finish()
         }
 
         val mapFragment = supportFragmentManager
@@ -75,7 +80,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun setupViewModel() {
-        mapsViewModel = ViewModelProvider(this)[MapsViewModel::class.java]
+        mapsViewModel = ViewModelProvider(this, ViewModelFactory(UserPreference.getInstance(dataStore))
+        )[MapsViewModel::class.java]
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -85,10 +91,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-    private val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
-        ) { permissions ->
+    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             when {
                 permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
                     // Precise location access granted.
@@ -138,44 +141,112 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun showStartMarker(location: Location) {
 
-        val startLocation = LatLng(location.latitude, location.longitude)
-        mMap.addMarker(
-            MarkerOptions()
-                .position(startLocation)
-                .title("Lokasi Jemput")
-        )
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(startLocation, 14f))
-        Log.d("Debug:" ,"Your Location:"+ location.longitude)
+        mapsViewModel.getVerification().observe(this) { data ->
+            val verification = data.verification
+            if (verification == false) {
+                binding.clContainerBottom2.visibility = GONE
+                binding.clContainerBottom1.visibility = VISIBLE
+                val startLocation = LatLng(location.latitude, location.longitude)
+                mMap.addMarker(
+                    MarkerOptions()
+                        .position(startLocation)
+                        .title("Lokasi Jemput")
+                )
+                Log.d("Debug:" ,"Your Location:"+ location.longitude)
 
-        binding.actvPickUpLocation.text = getCityName(location.latitude,location.longitude)
+                binding.actvPickUpLocation.text = getCityName(location.latitude,location.longitude)
 
-        val locationPoint = location.latitude.toString() + "," + location.longitude.toString()
-        mapsViewModel.setDestination(locationPoint, 5000, "hospital" , "AIzaSyC3RwBupXyFdul5XtIAWjDsF9f8ogyLam4")
+                val locationPoint = location.latitude.toString() + "," + location.longitude.toString()
+                mapsViewModel.setDestination(locationPoint, 5000, "hospital" , "AIzaSyC3RwBupXyFdul5XtIAWjDsF9f8ogyLam4")
 
 
-        mapsViewModel.getDestination.observe(this) { destination ->
-            val destinastionLat = destination.results?.get(0)?.geometry?.location?.lat
-            val destinastionLong = destination.results?.get(0)?.geometry?.location?.lng
-            destinationHospital = LatLng(destinastionLat!!, destinastionLong!!)
-            val destinationMarker = MarkerOptions()
-                .position(destinationHospital)
-                .title("Lokasi Antar")
-                .icon(vectorToBitmap(R.drawable.ic_destination, Color.parseColor("#AE0505")))
+                mapsViewModel.getDestination.observe(this) { destination ->
+                    val destinastionLat = destination.results?.get(0)?.geometry?.location?.lat
+                    val destinastionLong = destination.results?.get(0)?.geometry?.location?.lng
+                    destinationPosition = LatLng(destinastionLat!!, destinastionLong!!)
+                    val destinationMarker = MarkerOptions()
+                        .position(destinationPosition)
+                        .title("Lokasi Antar")
+                        .icon(vectorToBitmap(R.drawable.ic_destination, Color.parseColor("#AE0505")))
 
-            mMap.addMarker(destinationMarker)
+                    mMap.addMarker(destinationMarker)
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(destinationPosition, 14f))
 
-            val locationDestination = destinastionLat.toString() + "," + destinastionLong.toString()
-            mapsViewModel.setRoute(locationPoint, locationDestination, "AIzaSyC3RwBupXyFdul5XtIAWjDsF9f8ogyLam4")
 
-            binding.actvDropLocation.text = destination.results.get(0)?.name
+                    val destinationLocation = destinastionLat.toString() + "," + destinastionLong.toString()
+                    mapsViewModel.setRoute(locationPoint, destinationLocation, "AIzaSyC3RwBupXyFdul5XtIAWjDsF9f8ogyLam4")
 
+                    binding.actvDropLocation.text = destination.results.get(0)?.name
+                }
+
+                mapsViewModel.getRoute.observe(this, { route ->
+                    drawPolyline(route)
+                    durationRoute(route)
+                })
+            }
+            else {
+                binding.clContainerBottom2.visibility = VISIBLE
+                binding.clContainerBottom1.visibility = GONE
+                //marker lokasi kamu
+                val startLocation = LatLng(location.latitude, location.longitude)
+                mMap.addMarker(
+                    MarkerOptions()
+                        .position(startLocation)
+                        .title("Lokasi Kamu")
+                )
+
+                binding.actvPickUpLocation.text = getCityName(location.latitude,location.longitude)
+
+                val locationPoint = location.latitude.toString() + "," + location.longitude.toString()
+                mapsViewModel.setDestination(locationPoint, 5000, "hospital" , "AIzaSyC3RwBupXyFdul5XtIAWjDsF9f8ogyLam4")
+                mapsViewModel.setAmbulances("DKI Jakarta")
+
+                //menampilkan nama lokasi antar di textview destination
+                mapsViewModel.getDestination.observe(this) { destination ->
+                    binding.actvDropLocation.text = destination.results?.get(0)?.name
+                }
+
+                mapsViewModel.getAmbulances.observe(this) { ambulance ->
+                    val driverName = ambulance.data?.get(0)?.namaDriver
+                    val ambulancePlat = ambulance.data?.get(0)?.platNomor
+                    val ambulanceContact = ambulance.data?.get(0)?.kontakPicAmbulance
+                    val hospitalName = ambulance.data?.get(0)?.namaInstansi
+                    val driverLat = ambulance.data?.get(0)?.geopoint?._latitude
+                    val driverLong = ambulance.data?.get(0)?.geopoint?._longitude
+                    ambulancePosition = LatLng(driverLat!!, driverLong!!)
+
+                    val ambulanceMarker = MarkerOptions()
+                        .position(ambulancePosition)
+                        .title("Lokasi Ambulance")
+                        .icon(vectorToBitmap(R.drawable.ic_ambulance, Color.parseColor("#393996")))
+                    mMap.addMarker(ambulanceMarker)
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ambulancePosition, 12f))
+
+                    binding.apply {
+                        tvNameDriverAmbulance.text = driverName
+                        tvDestinationHospital.text = hospitalName
+                        tvNumberDriverAmbulance.text = ambulancePlat
+                        tvSendSMSDriver.setOnClickListener{
+                            goToWhatapp(ambulanceContact!!)
+                        }
+                        tvCallDriver.setOnClickListener {
+                            mapsViewModel.setVerification(ModelPreference(false))
+                        }
+                    }
+
+                    val ambulanceLocation = driverLat.toString() + "," + driverLong.toString()
+                    mapsViewModel.setRoute(locationPoint, ambulanceLocation, "AIzaSyC3RwBupXyFdul5XtIAWjDsF9f8ogyLam4")
+
+                }
+
+                mapsViewModel.getRoute.observe(this, { route ->
+                    drawPolyline(route)
+                    durationRoute(route)
+                })
+
+
+            }
         }
-
-        mapsViewModel.getRoute.observe(this, { route ->
-            drawPolyline(route)
-            durationRoute(route)
-        })
-
     }
 
     private fun setDataDriver() {
@@ -260,12 +331,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 
-    private fun goToWhatapp(pic : String){
+    private fun goToWhatapp(contact : String){
         startActivity(
             Intent(
                 Intent.ACTION_VIEW,
                 Uri.parse(
-                        "https://api.whatsapp.com/send?phone=6281533375594&text=Halo Pak, Saya yang memesan Ambulance. Terimakasih!!!"
+                        "https://api.whatsapp.com/send?phone=$contact&text=Halo Pak, Saya yang memesan Ambulance. Terimakasih!!!"
                 )
             )
         )

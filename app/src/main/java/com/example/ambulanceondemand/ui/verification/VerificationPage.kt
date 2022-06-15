@@ -1,5 +1,6 @@
 package com.example.ambulanceondemand.ui.verification
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
@@ -10,16 +11,24 @@ import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import com.example.ambulanceondemand.R
 import com.example.ambulanceondemand.databinding.ActivityVerificationPageBinding
 import com.example.ambulanceondemand.ui.CameraActivity
 import com.example.ambulanceondemand.ui.landing.MapsActivity
 import com.example.ambulanceondemand.ui.landing.MapsViewModel
+import com.example.ambulanceondemand.ui.landing.model.ModelPreference
+import com.example.ambulanceondemand.util.UserPreference
+import com.example.ambulanceondemand.util.ViewModelFactory
 import com.example.ambulanceondemand.util.rotateBitmap
 import com.google.tflite.catvsdog.tflite.Classifier
 import id.byu.salesagen.external.extension.textContent
 import java.io.File
+
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class VerificationPage : AppCompatActivity() {
     private val mInputSize = 350
@@ -30,6 +39,7 @@ class VerificationPage : AppCompatActivity() {
 
     companion object {
         const val CAMERA_X_RESULT = 200
+        private const val VERIFICATION = true
     }
 
     private lateinit var binding: ActivityVerificationPageBinding
@@ -52,7 +62,8 @@ class VerificationPage : AppCompatActivity() {
     }
 
     private fun setupViewModel() {
-        verificationViewModel = ViewModelProvider(this)[VerificationViewModel::class.java]
+        verificationViewModel = ViewModelProvider(this, ViewModelFactory(UserPreference.getInstance(dataStore))
+        )[VerificationViewModel::class.java]
     }
 
     private fun initClassifier() {
@@ -96,28 +107,12 @@ class VerificationPage : AppCompatActivity() {
                     setBackground(R.color.colorPrimary)
                 }
 
+                //klik tombol next
                 binding.tvNext.setOnClickListener {
-                    verificationViewModel.setAmbulances("DKI Jakarta")
-                    verificationViewModel.getAmbulances.observe(this){ destination ->
-                        val driverName = destination.data?.get(0)?.namaDriver
-                        val ambulanceNumber = destination.data?.get(0)?.platNomor
-                        val contactPicAmbulance = destination.data?.get(0)?.kontakPicAmbulance
-                        val hospitalName = destination.data?.get(0)?.namaInstansi
-                        val driverLat = destination.data?.get(0)?.geopoint?._latitude
-                        val driverLng = destination.data?.get(0)?.geopoint?._longitude
-
-                        val intentOrderAmbulance = Intent(this@VerificationPage, MapsActivity::class.java).also {
-                            it.putExtra(MapsActivity.EXTRA_DRIVER_NAME , driverName)
-                            it.putExtra(MapsActivity.EXTRA_HOSPITAL_NAME , hospitalName)
-                            it.putExtra(MapsActivity.EXTRA_AMBULANCE_NUMBER , ambulanceNumber)
-                            it.putExtra(MapsActivity.EXTRA_CONTACT_PIC_NUMBER , contactPicAmbulance)
-                            it.putExtra(MapsActivity.EXTRA_DRIVER_LAT , driverLat)
-                            it.putExtra(MapsActivity.EXTRA_DRIVER_LNG , driverLng)
-
-                        }
-                        startActivity(intentOrderAmbulance)
-                        finish()
-                    }
+                    verificationViewModel.setVerification(ModelPreference(VERIFICATION))
+                    val intentOrderAmbulance = Intent(this@VerificationPage, MapsActivity::class.java)
+                    startActivity(intentOrderAmbulance)
+                    finish()
                 }
 
             }

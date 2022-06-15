@@ -4,15 +4,19 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.ambulanceondemand.repository.driverrepository.ApiConfigDriver
 import com.example.ambulanceondemand.ui.landing.MapsViewModel
 import com.example.ambulanceondemand.ui.landing.model.HospitalResponses
+import com.example.ambulanceondemand.ui.landing.model.ModelPreference
 import com.example.ambulanceondemand.ui.verification.model.VerificationResponseX
+import com.example.ambulanceondemand.util.UserPreference
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class VerificationViewModel: ViewModel() {
+class VerificationViewModel(private val pref: UserPreference): ViewModel() {
 
     private val _getAmbulances = MutableLiveData<VerificationResponseX>()
     val getAmbulances: LiveData<VerificationResponseX> = _getAmbulances
@@ -41,6 +45,12 @@ class VerificationViewModel: ViewModel() {
                     Log.e("gagal woi", t.printStackTrace().toString())
                 }
             })
+    }
+
+    fun setVerification(user: ModelPreference) {
+        viewModelScope.launch {
+            pref.setVerification(user)
+        }
     }
 
 }
