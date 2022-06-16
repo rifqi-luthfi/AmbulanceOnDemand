@@ -40,7 +40,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/ibShutterCamera"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:srcCompat="@drawable/ic_flash" />
+        app:srcCompat="@drawable/ic_flash_on" />
 
     <ImageButton
         android:id="@+id/ibShutterCamera"

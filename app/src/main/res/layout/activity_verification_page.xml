@@ -139,6 +139,7 @@
                 app:layout_constraintStart_toStartOf="parent">
 
                 <RadioButton
+                    android:id="@+id/rbAccident1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Fatal"
@@ -147,6 +148,7 @@
                     android:background="@drawable/bg_form_input"/>
 
                 <RadioButton
+                    android:id="@+id/rbAccident2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Luka Berat"
@@ -155,6 +157,7 @@
                     android:background="@drawable/bg_form_input"/>
 
                 <RadioButton
+                    android:id="@+id/rbAccident3"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Luka Ringan"
@@ -184,16 +187,44 @@
                 app:layout_constraintStart_toEndOf="@id/tvUpload"
                 app:layout_constraintTop_toTopOf="@id/tvUpload"/>
 
-            <ImageView
-                android:id="@+id/ivUpload"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvUpload"
                 android:layout_width="match_parent"
-                android:layout_height="140dp"
-                android:background="@drawable/bg_form_input"
-                android:scaleType="centerCrop"
-                android:elevation="4dp"
-                android:layout_marginTop="16dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/tvUpload"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clCamera"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/ivUpload"
+                        android:layout_width="match_parent"
+                        android:layout_height="140dp"
+                        android:background="@drawable/bg_form_input"
+                        android:scaleType="centerCrop"
+                        android:elevation="4dp"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <ImageView
+                        android:id="@+id/ivCamera"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_camera"
+                        android:elevation="4dp"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent
+"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:id="@+id/tvNext"
@@ -206,7 +237,7 @@
                 android:text="Lanjutkan"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                app:layout_constraintTop_toBottomOf="@id/ivUpload"
+                app:layout_constraintTop_toBottomOf="@id/cvUpload"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 

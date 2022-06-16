@@ -19,52 +19,6 @@
         map:layout_constraintVertical_bias="0.0" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clContainerTop1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:visibility="gone"
-        map:layout_constraintEnd_toEndOf="parent"
-        map:layout_constraintStart_toStartOf="parent"
-        map:layout_constraintTop_toTopOf="parent">
-
-        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-            android:id="@+id/actvMapSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_white_container"
-            android:completionThreshold="1"
-            android:hint="@string/hint_location_landing"
-            android:imeOptions="actionSearch"
-            android:inputType="text"
-            android:letterSpacing="0.01"
-            android:lineSpacingExtra="10sp"
-            android:maxLines="1"
-            android:padding="16dp"
-            android:singleLine="true"
-            map:layout_constraintBottom_toBottomOf="parent"
-            map:layout_constraintEnd_toEndOf="parent"
-            map:layout_constraintStart_toStartOf="parent"
-            map:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/ivToggle"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            android:paddingStart="8dp"
-            android:paddingEnd="16dp"
-            android:src="@drawable/ic_dropdown"
-            map:layout_constraintBottom_toBottomOf="parent"
-            map:layout_constraintEnd_toEndOf="parent"
-            map:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="@string/toogledropdown"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -226,7 +180,7 @@
             android:background="@color/redPrimary"
             android:fontFamily="@font/gilroy_medium"
             android:padding="15dp"
-            android:text="Ambulance Kamu Akan Segera Tiba"
+            android:text="Mencari Ambulan Terdekat..."
             android:textAlignment="center"
             android:textColor="@color/white"
             map:layout_constraintBottom_toBottomOf="parent"
