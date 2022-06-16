@@ -116,9 +116,15 @@ class MapsViewModel(private val pref: UserPreference): ViewModel() {
                 ) {
                     _isLoading.value = false
                     if (response.isSuccessful) {
-                        _getNearAmbulance.postValue(response.body())
-                        Log.d("api getNearAmbulance", "onResponse: ${response.body()?.ambulances?.get(0)?.namaDriver}}")
-                        Log.d("api getNearAmbulance", "onResponse: ${response.body()?.ambulances?.get(0)?.kontakPicAmbulance}}")
+                        val found = response.body()?.found
+                        if (found == 0){
+                            setVerification(ModelPreference(false))
+                            Log.d("Found", "onResponse: ${found}}")
+                            Log.d("Found", "onResponse: ${response.body()?.ambulances?.get(0)?.kontakPicAmbulance}}")
+                        }else{
+                            _getNearAmbulance.postValue(response.body())
+                        }
+
                     }
                 }
 

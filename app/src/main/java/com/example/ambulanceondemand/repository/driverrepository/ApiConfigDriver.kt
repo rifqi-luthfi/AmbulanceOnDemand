@@ -8,7 +8,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 class ApiConfigDriver {
     companion object{
 //        private const val BASEURL = "https://us-central1-on-demand-ambulance-166bf.cloudfunctions.net"
-        private const val BASEURL = "https://us-central1-on-demand-ambulance.cloudfunctions.net/ambulances/"
+//        private const val BASEURL = "https://us-central1-on-demand-ambulance.cloudfunctions.net/ambulances/"
+        private const val BASEURL = "https://cariambulance.masuk.id/api/"
         fun getRetrofitClientInstance() : ApiServicesDriver {
             val loggingInterceptor =
                 HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
