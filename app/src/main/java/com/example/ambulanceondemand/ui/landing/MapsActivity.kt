@@ -165,7 +165,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     val destinationMarker = MarkerOptions()
                         .position(destinationPosition)
                         .title("Lokasi Antar")
-                        .icon(vectorToBitmap(R.drawable.ic_destination, Color.parseColor("#AE0505")))
+                        .icon(vectorToBitmap(R.drawable.ic_hospital, Color.parseColor("#AE0505")))
 
                     mMap.addMarker(destinationMarker)
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(destinationPosition, 14f))
@@ -200,7 +200,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 binding.clContainerBottom2.visibility = VISIBLE
                 binding.clContainerBottom1.visibility = GONE
-                //marker lokasi kamu
                 val startLocation = LatLng(location.latitude, location.longitude)
                 mMap.addMarker(
                     MarkerOptions()
@@ -212,14 +211,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 val locationPoint = location.latitude.toString() + "," + location.longitude.toString()
                 mapsViewModel.setDestination(locationPoint, 5000, "hospital" , "AIzaSyC3RwBupXyFdul5XtIAWjDsF9f8ogyLam4")
-//                mapsViewModel.setAmbulances("DKI Jakarta")
-                mapsViewModel.setNearAmbulance(locationPoint, 100000)
-
-                //menampilkan nama lokasi antar di textview destination
                 mapsViewModel.getDestination.observe(this) { destination ->
                     binding.actvDropLocation.text = destination.results?.get(0)?.name
                 }
 
+                mapsViewModel.setNearAmbulance(locationPoint, 50000)
                 mapsViewModel.getNearAmbulance.observe(this) { ambulance ->
                     val driverName = ambulance.ambulances?.get(0)?.namaDriver
                     val ambulancePlat = ambulance.ambulances?.get(0)?.platNomor

@@ -155,7 +155,6 @@ class CameraActivity : AppCompatActivity() {
 
     private fun flashMode() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
-        // Used to bind the lifecycle of cameras to the lifecycle owner
         val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
         val preview = Preview.Builder()
             .build()
@@ -173,10 +172,10 @@ class CameraActivity : AppCompatActivity() {
             camera.cameraInfo.torchState.observe(this) {
                 if (it == TorchState.ON) {
                     flashEnable = true
-                    binding.ibFlash.setImageResource(R.drawable.ic_flash_on)
+                    binding.ibFlash.setImageResource(R.drawable.ic_flash_off)
                 } else {
                     flashEnable = false
-                    binding.ibFlash.setImageResource(R.drawable.ic_flash_off)
+                    binding.ibFlash.setImageResource(R.drawable.ic_flash_on)
                 }
             }
         }
